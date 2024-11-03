@@ -1,0 +1,98 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node *next;
+};
+
+int getLength(struct Node *counterHead) {
+    int length = 0; // Başlangıç değeri
+    while (counterHead) {
+        length++; // Düğüm sayısını artır
+        counterHead = counterHead->next; // Sonraki düğüme geç
+    }
+    return length; // Düğümlerin sayısını döndür
+}
+
+int getMiddle(struct Node *head) { // Orta elemanı bul
+    int length = getLength(head);
+    if (length == 0) return -1; // Boş liste kontrolü
+    int midIndex = length / 2; 
+    
+    while (midIndex--) { // midIndex sıfır olana kadar döngü
+        head = head->next;
+    }
+    return head->data; // Orta düğümün verisini döndür
+}
+
+struct Node* createNode(int x) {
+    struct Node* head = NULL;
+    struct Node* temp = NULL;
+    struct Node* current = NULL;
+    for (int i = 0; i < x; i++) {
+        int dataValue;
+        temp = (struct Node*)malloc(sizeof(struct Node));
+        if (temp == NULL) {
+            printf("Memory allocation failed!\n");
+            return head;  
+        }
+
+        printf("What is the value of this node: ");
+        scanf("%d", &dataValue);
+        temp->data = dataValue;
+        temp->next = NULL;
+
+        if (head == NULL) {
+            head = temp;
+            current = head;
+        } else {
+            current->next = temp;
+            current = temp;
+        }
+    }
+    return head; // Baş düğümü döndür
+}
+
+void printList(struct Node *head) {
+    struct Node *current = head;
+    if (current == NULL) {
+        printf("The list is empty.\n");
+        return;
+    }
+
+    while (current != NULL) {
+
+        printf("%d", current->data);
+        current = current->next; // Sonraki düğüme geç
+        if (current) {
+            printf(" -> "); 
+        }
+    }
+
+
+    int middleValue = getMiddle(head); // Orta düğümün değerini al
+    if (middleValue != -1) {
+        printf("\nMiddle element of the list is %d\n", middleValue);
+    } else {
+        printf("The list is empty, no middle element.\n");
+    }
+}
+
+int main() {
+    int number;
+    printf("How many nodes do you want to create? ");
+    scanf("%d", &number);
+    struct Node *linkedList = createNode(number);
+    printList(linkedList);
+
+    // Belleği temizle
+    struct Node *temp;
+    while (linkedList != NULL) {
+        temp = linkedList;
+        linkedList = linkedList->next;
+        free(temp); // Belleği serbest bırak
+    }
+
+    return 0;
+}
