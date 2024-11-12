@@ -1,0 +1,78 @@
+#include <stdio.h>
+#include <stdlib.h>
+//Inserting an element at the end of te list
+void lastinsert(int data);
+
+struct node {
+    int data;
+    struct node *next;
+};
+
+struct node *head = NULL;
+
+void lastinsert(int item){
+
+    struct node *ptr = (struct node*)malloc(sizeof(struct node));
+    if (!ptr){
+        printf("\nSTACKOVERFLOW\n");
+        return;
+    }
+    else{
+
+        ptr->data=item;
+
+        if (!head)
+        {
+            ptr->next = NULL;
+            head =ptr;
+
+
+        }
+        else{
+
+            struct node *temp=head;
+            while (temp->next){
+                
+                temp=temp->next;
+            }
+            temp->next = ptr;
+            ptr->next = NULL;
+            printf("\nNode inserted\n");
+        }
+        
+    }
+}
+
+void printList() {
+    struct node *temp = head;
+    while (temp != NULL) {
+        printf("%d->", temp->data);
+        temp = temp->next;
+    }
+    printf("NULL\n");
+}
+
+
+int main() {
+    int choice, item;
+
+    do {
+        printf("\nEnter the item which you want to insert: ");
+        scanf("%d", &item);
+        lastinsert(item);
+
+        printf("\nPress 0 to insert more, any other key to exit: ");
+        scanf("%d", &choice);
+
+
+    } while (choice == 0);
+
+
+        printList();
+        return 0;
+    
+    
+    }
+
+
+
